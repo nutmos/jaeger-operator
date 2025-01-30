@@ -389,6 +389,41 @@ func TestInject(t *testing.T) {
 			},
 		},
 		{
+			es: v1.ElasticsearchSpec{
+				Name: "elasticsearch",
+
+			},
+			pod: &corev1.PodSpec{
+				Containers: []corev1.Container{{
+					Args: []string{"--es.num-replicas=1"},
+				}},
+			},
+			expected: &corev1.PodSpec{
+				Containers: []corev1.Container{{
+					Args: []string{
+						"--es.num-replicas=1",
+						"--es.server-urls=https://elasticsearch.project.svc.cluster.local:9200",
+						"--es.tls.enabled=true",
+						"--es.tls.ca=" + caPath,
+						"--es.tls.cert=" + certPath,
+						"--es.tls.key=" + keyPath,
+						"--es.timeout=15s",
+						"--es.num-shards=0",
+					},
+					VolumeMounts: []corev1.VolumeMount{
+						{Name: volumeName, ReadOnly: true, MountPath: volumeMountPath},
+					},
+				}},
+				Volumes: []corev1.Volume{
+					{Name: "certs", VolumeSource: corev1.VolumeSource{
+						Secret: &corev1.SecretVolumeSource{
+							SecretName: "jtest-jaeger-elasticsearch",
+						},
+					}},
+				},
+			},
+		},
+		{
 			pod: &corev1.PodSpec{Containers: []corev1.Container{{}}},
 			es: v1.ElasticsearchSpec{
 				Name:             "my-es",

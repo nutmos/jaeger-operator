@@ -77,8 +77,8 @@ func envVars(opts v1.Options) []corev1.EnvVar {
 		flag   string
 		envVar string
 	}{
-		{flag: "es.num-shards", envVar: "SHARDS"},
-		{flag: "es.num-replicas", envVar: "REPLICAS"},
+		{flag: "es.num-shards", envVar: "ES_NUM_SHARDS"},
+		{flag: "es.num-replicas", envVar: "ES_NUM_REPLICAS"},
 	}
 	options := opts.StringMap()
 	for _, x := range scriptEnvVars {

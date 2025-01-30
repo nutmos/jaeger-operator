@@ -140,8 +140,8 @@ func (ed *ElasticsearchDeployment) InjectSecretsConfiguration(p *corev1.PodSpec)
 			corev1.EnvVar{Name: "ES_TLS_CA", Value: ed.getCertCaPath()},
 			corev1.EnvVar{Name: "ES_TLS_KEY", Value: ed.getCertKeyPath()},
 			corev1.EnvVar{Name: "ES_TLS_CERT", Value: ed.getCertPath()},
-			corev1.EnvVar{Name: "SHARDS", Value: strconv.Itoa(int(ed.Jaeger.Spec.Storage.Elasticsearch.NodeCount))},
-			corev1.EnvVar{Name: "REPLICAS", Value: strconv.Itoa(calculateReplicaShards(ed.Jaeger.Spec.Storage.Elasticsearch.RedundancyPolicy, int(ed.Jaeger.Spec.Storage.Elasticsearch.NodeCount)))},
+			corev1.EnvVar{Name: "ES_NUM_SHARDS", Value: strconv.Itoa(int(ed.Jaeger.Spec.Storage.Elasticsearch.NodeCount))},
+			corev1.EnvVar{Name: "ES_NUM_REPLICAS", Value: strconv.Itoa(calculateReplicaShards(ed.Jaeger.Spec.Storage.Elasticsearch.RedundancyPolicy, int(ed.Jaeger.Spec.Storage.Elasticsearch.NodeCount)))},
 		)
 		p.Containers[0].VolumeMounts = append(p.Containers[0].VolumeMounts, corev1.VolumeMount{
 			Name:      volumeName,
